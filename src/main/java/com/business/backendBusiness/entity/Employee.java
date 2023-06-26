@@ -1,23 +1,59 @@
 package com.business.backendBusiness.entity;
 
+
+import jakarta.persistence.*;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "employee")
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "idemployee", nullable = false)
+    private Integer idemployee;
 
-   private String user;
-   private String password;
+    @Column(name = "hire_date")
+    private Date hireDate;
 
-    public String getUser() {
-        return user;
+    @Column(name = "dob_date")
+    private Date dobDate;
+
+    @Column(name = "rate")
+    private Double rate;
+
+
+
+
+    public Integer getIdemployee() {
+        return idemployee;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setIdemployee(Integer idemployee) {
+        this.idemployee = idemployee;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getHireDate() {
+        return hireDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHireDate(Date hireDate) {
+        this.hireDate = hireDate;
+    }
+
+    public Date getDobDate() {
+        return dobDate;
+    }
+
+    public void setDobDate(Date dobDate) {
+        this.dobDate = dobDate;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }

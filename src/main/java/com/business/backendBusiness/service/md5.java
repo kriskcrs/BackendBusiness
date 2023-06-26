@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class md5 {
 
-    public String convierte(String entrada){
+    public String encode(String entrada){
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(entrada.getBytes());
