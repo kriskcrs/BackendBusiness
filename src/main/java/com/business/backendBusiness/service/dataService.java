@@ -60,8 +60,7 @@ public class dataService {
     }
 
     @GetMapping(path = "/user")
-    private List<User> userList() {
-        return userRepository.findAll();
+    private List<User> userList() {return  userRepository.findAll();
     }
 
 }

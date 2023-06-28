@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "user")
 public class User {
+
     @Id
     @Column(name = "iduser", nullable = false)
     private String iduser;
