@@ -16,6 +16,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class WebSecurityConfig {
 
+    private static String userData  = "4dm1nst4d0r";
+    private static String pass = "$2a$10$gJzFzIjsHa3DUbIdb3sUjePRXTAsLbjL3oLYXuA8nNy1AHXXDPU0m";
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -34,8 +37,8 @@ public class WebSecurityConfig {
     @Bean
     UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(User.withUsername("root")
-                .password(passwordEncoder().encode("$2a$10$gJzFzIjsHa3DUbIdb3sUjePRXTAsLbjL3oLYXuA8nNy1AHXXDPU0m"))
+        manager.createUser(User.withUsername(userData)
+                .password(passwordEncoder().encode(pass))
                 .roles()
                 .build());
         return manager;
