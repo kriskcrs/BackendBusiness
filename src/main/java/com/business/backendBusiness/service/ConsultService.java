@@ -34,12 +34,6 @@ public class ConsultService {
     }
 
 
-    @GetMapping(path = "/person/{name}/{lastName}")
-    private List<Person> employee(@PathVariable("name") String name, @PathVariable("lastName") String last) {
-        return personRepository.findByFirstNameOrLastName(name,last);
-    }
-
-
     @GetMapping(path = "/location")
     private List<Location> locationList() {
         return locationRepository.findAll();
@@ -55,6 +49,17 @@ public class ConsultService {
     private List<Person> personList() {
         return personRepository.findAll();
     }
+
+    @GetMapping(path = "/person/{name}/{lastName}")
+    private List<Person> personName(@PathVariable("name") String name, @PathVariable("lastName") String last) {
+        return personRepository.findByFirstNameOrLastName(name, last);
+    }
+
+    @GetMapping(path = "/person/{id}")
+    private Optional<Person> personId(@PathVariable("id") Integer id) {
+        return personRepository.findById(Long.valueOf(id));
+    }
+
 
     @GetMapping(path = "/state")
     private List<State> stateList() {
