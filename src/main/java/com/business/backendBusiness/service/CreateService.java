@@ -26,20 +26,22 @@ public class CreateService {
     WorkRepository workRepository;
 
     @PostMapping(path = "/person")
-    private Person createPerson(@RequestBody Person person) {
+    private Object createPerson(@RequestBody Person person) {
         try {
             int id = personRepository.findAll().size();
             id++;
             person.setIdperson((long) id);
             personRepository.save(person);
             //create user
-            User user = new User();
-            user.setUser(person.getFirstName().substring(0, 1) + person.getLastName() + id);
-            user.setPassword(new md5().encode("1"));
-            user.setPersonIdperson(person.getIdperson());
-            createUser(user);
-            return person;
-
+            User userData = new User();
+            userData.setUser(person.getFirstName().charAt(0) + person.getLastName() + id);
+            userData.setPassword(new md5().encode("1"));
+            userData.setPersonIdperson(person.getIdperson());
+            int idUser = userRepository.findAll().size();
+            idUser++;
+            userData.setIduser((long) idUser);
+            userRepository.save(userData);
+            return userData;
         } catch (Exception e) {
             System.out.println("Error CreatePerson -> " + e.getMessage());
             System.out.println("Error Cause CreatePerson -> " + e.getCause());
@@ -47,47 +49,60 @@ public class CreateService {
         }
     }
 
-    @PostMapping(path = "/updateUser")
-    private User createUser(@RequestBody User user) {
+
+    @PostMapping(path = "/location")
+    private Location createLocation(@RequestBody Location location) {
         try {
-            int id = userRepository.findAll().size();
-            id++;
-            user.setIduser((long) id);
-            return userRepository.save(user);
+            return locationRepository.save(location);
         } catch (Exception e) {
-            System.out.println("Error CreateUser -> " + e.getMessage());
-            System.out.println("Error Cause CreateUser -> " + e.getCause());
+            System.out.println("Error createLocation -> " + e.getMessage());
+            System.out.println("Error Cause createLocation -> " + e.getCause());
             return null;
         }
     }
 
-
-
-
-    @PostMapping(path="/location")
-    private Location createLocation(@RequestBody Location location){
-       try{
-           return locationRepository.save(location);
-       }catch (Exception e){
-           System.out.println("Error creatLocation -> " + e.getMessage());
-           return null;
-       }
-
+    @PostMapping(path = "/state")
+    private State createState(@RequestBody State state) {
+        try {
+            return stateRepository.save(state);
+        } catch (Exception e) {
+            System.out.println("Error createState -> " + e.getMessage());
+            System.out.println("Error Cause createState -> " + e.getCause());
+            return null;
+        }
     }
 
-    @PostMapping(path="/state")
-    private State createState(@RequestBody State state){
-        return stateRepository.save(state);
+    @PostMapping(path = "/employee")
+    private Employee createState(@RequestBody Employee employee) {
+        try {
+            return employeeRepository.save(employee);
+        } catch (Exception e) {
+            System.out.println("Error createEmployee -> " + e.getMessage());
+            System.out.println("Error Cause createEmployee -> " + e.getCause());
+            return null;
+        }
     }
 
-    @PostMapping(path="/employee")
-    private Employee createState(@RequestBody Employee employee){
-        return employeeRepository.save(employee);
+    @PostMapping(path = "/work")
+    private Work createState(@RequestBody Work work) {
+        try {
+            return workRepository.save(work);
+        } catch (Exception e) {
+            System.out.println("Error createWork -> " + e.getMessage());
+            System.out.println("Error Cause createWork -> " + e.getCause());
+            return null;
+        }
     }
 
-    @PostMapping(path="/work")
-    private Work createState(@RequestBody Work work){
-        return workRepository.save(work);
+    @PostMapping(path = "/userUpdate")
+    private User updateUser(@RequestBody User user) {
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            System.out.println("Error updateUser -> " + e.getMessage());
+            System.out.println("Error Cause updateUser -> " + e.getCause());
+            return null;
+        }
     }
 
 
