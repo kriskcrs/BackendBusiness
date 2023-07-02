@@ -1,24 +1,26 @@
 package com.business.backendBusiness.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "state")
+@Table(name ="state")
 public class State {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idstate", nullable = false)
-    private Integer idState;
-    @Column(name = "state")
+    @Column(name="idstate", nullable = false)
+    private Long idstate;
+
+    @Column(name="state")
     private String state;
 
-
-    public Integer getIdState() {
-        return idState;
+    public Long getIdstate() {
+        return idstate;
     }
 
-    public void setIdState(Integer idState) {
-        this.idState = idState;
+    public void setIdstate(Long idstate) {
+        this.idstate = idstate;
     }
 
     public String getState() {

@@ -10,34 +10,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("consult")
 @CrossOrigin
-public class dataService {
+public class ConsultService {
+
 
     @Autowired
     PersonRepository personRepository;
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     EmployeeRepository employeeRepository;
-
     @Autowired
     LocationRepository locationRepository;
-
     @Autowired
     StateRepository stateRepository;
-
     @Autowired
     WorkRepository workRepository;
 
-    @Autowired
-    UserRepository userRepository;
-
-    @GetMapping(path = "/person")
-    private List<Person> personList() {
-        return personRepository.findAll();
-    }
 
     @GetMapping(path = "/employee")
     private List<Employee> employeeList() {
@@ -49,9 +40,21 @@ public class dataService {
         return locationRepository.findAll();
     }
 
+
+    @GetMapping(path = "/person")
+    private List<Person> personList() {
+        return personRepository.findAll();
+    }
+
     @GetMapping(path = "/state")
     private List<State> stateList() {
         return stateRepository.findAll();
+    }
+
+
+    @GetMapping(path = "/user")
+    private List<User> userList() {
+        return userRepository.findAll();
     }
 
     @GetMapping(path = "/work")
@@ -59,8 +62,5 @@ public class dataService {
         return workRepository.findAll();
     }
 
-    @GetMapping(path = "/user")
-    private List<User> userList() {return  userRepository.findAll();
-    }
 
 }

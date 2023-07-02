@@ -1,38 +1,54 @@
 package com.business.backendBusiness.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
+
 @Entity
-@Table(name = "work")
+@Table(name ="work")
 public class Work {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idwork", nullable = false)
-    private Integer idWork;
-    @Column(name = "date_work")
+    @Column(name="idwork", nullable = false)
+    private Long idwork;
+
+    @Column(name="date_work")
     private Date dateWork;
-    @Column(name = "start_time")
+
+    @Column(name="start_time")
     private Date startTime;
-    @Column(name = "end_time")
+
+    @Column(name="end_time")
     private Date endTime;
-    @Column(name = "total_hour")
+
+    @Column(name="total_hour")
     private Integer totalHour;
-    @Column(name = "start_geo")
-    private Integer startGeo;
-    @Column(name = "end_geo")
-    private Integer endGeo;
-    @Column(name = "rate_today")
-    private Integer rateToday;
 
+    @Column(name="start_geo")
+    private String startGeo;
 
-    public Integer getIdWork() {
-        return idWork;
+    @Column(name="end_geo")
+    private String endGeo;
+
+    @Column(name="rate_today")
+    private Double rateToday;
+
+    @Column(name="employee_idemployee")
+    private Integer employeeIdemployee;
+
+    @Column(name="state_idstate")
+    private Integer stateIdstate;
+
+    public Long getIdwork() {
+        return idwork;
     }
 
-    public void setIdWork(Integer idWork) {
-        this.idWork = idWork;
+    public void setIdwork(Long idwork) {
+        this.idwork = idwork;
     }
 
     public Date getDateWork() {
@@ -67,27 +83,43 @@ public class Work {
         this.totalHour = totalHour;
     }
 
-    public Integer getStartGeo() {
+    public String getStartGeo() {
         return startGeo;
     }
 
-    public void setStartGeo(Integer startGeo) {
+    public void setStartGeo(String startGeo) {
         this.startGeo = startGeo;
     }
 
-    public Integer getEndGeo() {
+    public String getEndGeo() {
         return endGeo;
     }
 
-    public void setEndGeo(Integer endGeo) {
+    public void setEndGeo(String endGeo) {
         this.endGeo = endGeo;
     }
 
-    public Integer getRateToday() {
+    public Double getRateToday() {
         return rateToday;
     }
 
-    public void setRateToday(Integer rateToday) {
+    public void setRateToday(Double rateToday) {
         this.rateToday = rateToday;
+    }
+
+    public Integer getEmployeeIdemployee() {
+        return employeeIdemployee;
+    }
+
+    public void setEmployeeIdemployee(Integer employeeIdemployee) {
+        this.employeeIdemployee = employeeIdemployee;
+    }
+
+    public Integer getStateIdstate() {
+        return stateIdstate;
+    }
+
+    public void setStateIdstate(Integer stateIdstate) {
+        this.stateIdstate = stateIdstate;
     }
 }

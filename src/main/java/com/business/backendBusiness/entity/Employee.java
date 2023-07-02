@@ -1,7 +1,9 @@
 package com.business.backendBusiness.entity;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.util.Date;
 
@@ -9,28 +11,39 @@ import java.util.Date;
 @Table(name = "employee")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idemployee", nullable = false)
-    private Integer idemployee;
+    private Long idemployee;
 
-    @Column(name = "hire_date")
-    private Date hireDate;
-
-    @Column(name = "dob_date")
-    private Date dobDate;
 
     @Column(name = "rate")
     private Double rate;
 
 
+    @Column(name="hire_date")
+    private Date hireDate;
+    @Column(name="dob_date")
+    private Date dobDate;
+    @Column(name="person_idperson")
+    private Integer personIdperson;
+    @Column(name="location_idlocation")
+    private Integer locationIdlocation;
+    @Column(name="state_idstate")
+    private Integer stateIdstate;
 
-
-    public Integer getIdemployee() {
+    public Long getIdemployee() {
         return idemployee;
     }
 
-    public void setIdemployee(Integer idemployee) {
+    public void setIdemployee(Long idemployee) {
         this.idemployee = idemployee;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 
     public Date getHireDate() {
@@ -49,11 +62,29 @@ public class Employee {
         this.dobDate = dobDate;
     }
 
-    public Double getRate() {
-        return rate;
+    public Integer getPersonIdperson() {
+        return personIdperson;
     }
 
-    public void setRate(Double rate) {
-        this.rate = rate;
+    public void setPersonIdperson(Integer personIdperson) {
+        this.personIdperson = personIdperson;
+    }
+
+    public Integer getLocationIdlocation() {
+        return locationIdlocation;
+    }
+
+    public void setLocationIdlocation(Integer locationIdlocation) {
+        this.locationIdlocation = locationIdlocation;
+    }
+
+    public Integer getStateIdstate() {
+        return stateIdstate;
+    }
+
+    public void setStateIdstate(Integer stateIdstate) {
+        this.stateIdstate = stateIdstate;
     }
 }
+
+

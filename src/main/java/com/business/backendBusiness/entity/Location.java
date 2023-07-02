@@ -1,25 +1,27 @@
 package com.business.backendBusiness.entity;
 
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "location")
+@Table(name ="location")
 public class Location {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idlocation", nullable = false)
-    private Integer idLocation;
-    @Column(name = "location")
+    @Column(name="idlocation", nullable = false)
+    private Integer Idlocation;
+
+    @Column(name="location")
     private String location;
 
-
-    public Integer getIdLocation() {
-        return idLocation;
+    public Integer getIdlocation() {
+        return Idlocation;
     }
 
-    public void setIdLocation(Integer idLocation) {
-        this.idLocation = idLocation;
+    public void setIdlocation(Integer idlocation) {
+        Idlocation = idlocation;
     }
 
     public String getLocation() {
