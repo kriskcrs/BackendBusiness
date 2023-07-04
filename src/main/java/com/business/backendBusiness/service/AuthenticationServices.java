@@ -4,16 +4,13 @@ package com.business.backendBusiness.service;
 import com.business.backendBusiness.Repository.UserRepository;
 import com.business.backendBusiness.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 
 @RestController
-
+@RequestMapping("/auth")
 @CrossOrigin
 public class AuthenticationServices {
 
@@ -23,6 +20,7 @@ public class AuthenticationServices {
     @PostMapping(path = "/authentications")
     private Optional<User> login(@RequestBody User user) {
         try {
+            System.out.println("login -> " + user.getUser());
             user.setPassword(new md5().encode(user.getPassword()));
             return userRepository.findByUserAndPassword(user.getUser(), user.getPassword());
         } catch (Exception e) {
