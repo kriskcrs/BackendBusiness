@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Optional;
 
 @RestController
@@ -68,7 +69,7 @@ public class CreateService {
             idUser++;
             userData.setIduser((long) idUser);
             userData.setRolIdrol((long) 1);
-            userData.setUser(personData.get().getFirstName().charAt(0) + personData.get().getLastName() + id);
+            userData.setUser((personData.get().getFirstName().charAt(0) + personData.get().getLastName() + id).toUpperCase());
             userData.setPassword(new md5().encode("1"));
             userData.setEmployeeIdemployee(employee.getPersonIdperson());
             userRepository.save(userData);

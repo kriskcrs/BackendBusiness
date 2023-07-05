@@ -38,10 +38,10 @@ public class Work {
     private Double rateToday;
 
     @Column(name="employee_idemployee")
-    private Integer employeeIdemployee;
+    private Long employeeIdemployee;
 
     @Column(name="state_idstate")
-    private Integer stateIdstate;
+    private Long stateIdstate;
 
 
 
@@ -109,21 +109,19 @@ public class Work {
         this.rateToday = rateToday;
     }
 
-    public Integer getEmployeeIdemployee() {
+    public Long getEmployeeIdemployee() {
         return employeeIdemployee;
     }
 
-    public void setEmployeeIdemployee(Integer employeeIdemployee) {
+    public void setEmployeeIdemployee(Long employeeIdemployee) {
         this.employeeIdemployee = employeeIdemployee;
     }
 
-    public Integer getStateIdstate() {
+    public Long getStateIdstate() {
         return stateIdstate;
     }
 
-    public void setStateIdstate(Integer stateIdstate) {
+    public void setStateIdstate(Long stateIdstate) {
         this.stateIdstate = stateIdstate;
     }
-
-
 }
