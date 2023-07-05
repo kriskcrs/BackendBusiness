@@ -21,11 +21,11 @@ public class Employee {
     @Column(name="dob_date")
     private Date dobDate;
     @Column(name="person_idperson")
-    private Integer personIdperson;
+    private Long personIdperson;
     @Column(name="location_idlocation")
-    private Integer locationIdlocation;
+    private Long locationIdlocation;
     @Column(name="state_idstate")
-    private Integer stateIdstate;
+    private Long stateIdstate;
 
     public Long getIdemployee() {
         return idemployee;
@@ -59,27 +59,27 @@ public class Employee {
         this.dobDate = dobDate;
     }
 
-    public Integer getPersonIdperson() {
+    public Long getPersonIdperson() {
         return personIdperson;
     }
 
-    public void setPersonIdperson(Integer personIdperson) {
+    public void setPersonIdperson(Long personIdperson) {
         this.personIdperson = personIdperson;
     }
 
-    public Integer getLocationIdlocation() {
+    public Long getLocationIdlocation() {
         return locationIdlocation;
     }
 
-    public void setLocationIdlocation(Integer locationIdlocation) {
+    public void setLocationIdlocation(Long locationIdlocation) {
         this.locationIdlocation = locationIdlocation;
     }
 
-    public Integer getStateIdstate() {
+    public Long getStateIdstate() {
         return stateIdstate;
     }
 
-    public void setStateIdstate(Integer stateIdstate) {
+    public void setStateIdstate(Long stateIdstate) {
         this.stateIdstate = stateIdstate;
     }
 }

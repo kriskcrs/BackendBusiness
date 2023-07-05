@@ -43,8 +43,7 @@ public class Work {
     @Column(name="state_idstate")
     private Integer stateIdstate;
 
-    @Column(name = "idsession")
-    private String idsession;
+
 
     public Long getIdwork() {
         return idwork;
@@ -126,11 +125,5 @@ public class Work {
         this.stateIdstate = stateIdstate;
     }
 
-    public String getIdsession() {
-        return idsession;
-    }
 
-    public void setIdsession(String idsession) {
-        this.idsession = idsession;
-    }
 }

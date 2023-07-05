@@ -19,8 +19,19 @@ public class User {
 
 
     //fk
-    @Column(name = "person_idperson")
-    private Long personIdperson;
+    @Column(name = "employee_idemployee")
+    private Long employeeIdemployee;
+
+    @Column(name ="rol_idrol")
+    private Long rolIdrol;
+
+    public Long getRolIdrol() {
+        return rolIdrol;
+    }
+
+    public void setRolIdrol(Long rolIdrol) {
+        this.rolIdrol = rolIdrol;
+    }
 
     public Long getIduser() {
         return iduser;
@@ -46,13 +57,11 @@ public class User {
         this.password = password;
     }
 
-    public Long getPersonIdperson() {
-        return personIdperson;
+    public Long getEmployeeIdemployee() {
+        return employeeIdemployee;
     }
 
-    public void setPersonIdperson(Long personIdperson) {
-        this.personIdperson = personIdperson;
+    public void setEmployeeIdemployee(Long employeeIdemployee) {
+        this.employeeIdemployee = employeeIdemployee;
     }
-
-
 }

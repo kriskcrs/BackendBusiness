@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("consult")
+@RequestMapping("v3")
 @CrossOrigin
 public class ConsultService {
 
@@ -26,6 +26,8 @@ public class ConsultService {
     StateRepository stateRepository;
     @Autowired
     WorkRepository workRepository;
+    @Autowired
+    RolRepository rolRepository;
 
 
     @GetMapping(path = "/employee")
@@ -64,6 +66,11 @@ public class ConsultService {
     @GetMapping(path = "/state")
     private List<State> stateList() {
         return stateRepository.findAll();
+    }
+
+    @GetMapping(path = "/rol")
+    private List<Rol> rol() {
+        return rolRepository.findAll();
     }
 
 
