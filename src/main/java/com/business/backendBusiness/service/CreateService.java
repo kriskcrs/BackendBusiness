@@ -41,13 +41,14 @@ public class CreateService {
             personRepository.save(person);
             Employee employee = new Employee();
             employee.setPersonIdperson(person.getIdperson());
-            return  createEmployee(employee);
+            return createEmployee(employee);
         } catch (Exception e) {
             System.out.println("Error CreatePerson -> " + e.getMessage());
             System.out.println("Error Cause CreatePerson -> " + e.getCause());
             return null;
         }
     }
+
     private User createEmployee(@RequestBody Employee employee) {
         try {
             //create employee
@@ -79,7 +80,6 @@ public class CreateService {
         }
     }
 
-
     @PostMapping(path = "/work")
     private Work createWork(@RequestBody Work work) {
         try {
@@ -93,7 +93,6 @@ public class CreateService {
             return null;
         }
     }
-
 
     @PostMapping(path = "/location")
     private Location createLocation(@RequestBody Location location) {
@@ -123,13 +122,9 @@ public class CreateService {
         }
     }
 
-
     @PostMapping(path = "/userUpdate")
     private User updateUser(@RequestBody User user) {
         try {
-            id = userRepository.findAll().size();
-            id++;
-            user.setIduser((long) id);
             return userRepository.save(user);
         } catch (Exception e) {
             System.out.println("Error updateUser -> " + e.getMessage());
@@ -138,13 +133,20 @@ public class CreateService {
         }
     }
 
+    @PostMapping(path = "/employeeUpdate")
+    private Employee updateEmployee(@RequestBody Employee employee) {
+        try {
+            return employeeRepository.save(employee);
+        } catch (Exception e) {
+            System.out.println("Error updateUser -> " + e.getMessage());
+            System.out.println("Error Cause updateUser -> " + e.getCause());
+            return null;
+        }
+    }
 
     @PostMapping(path = "/rolUpdate")
     private Rol updateRol(@RequestBody Rol rol) {
         try {
-            id = rolRepository.findAll().size();
-            id++;
-            rol.setIdrol((long) id);
             return rolRepository.save(rol);
         } catch (Exception e) {
             System.out.println("Error updateUser -> " + e.getMessage());
