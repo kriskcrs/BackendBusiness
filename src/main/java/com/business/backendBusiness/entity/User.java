@@ -2,6 +2,8 @@ package com.business.backendBusiness.entity;
 
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -13,6 +15,8 @@ public class User {
     private String user;
     @Column(name = "password")
     private String password;
+
+
 
     //fk
     @Column(name = "person_idperson")
@@ -49,4 +53,6 @@ public class User {
     public void setPersonIdperson(Long personIdperson) {
         this.personIdperson = personIdperson;
     }
+
+
 }

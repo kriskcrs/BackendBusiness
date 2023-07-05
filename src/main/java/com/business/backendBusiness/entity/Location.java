@@ -11,16 +11,16 @@ public class Location {
 
     @Id
     @Column(name="idlocation", nullable = false)
-    private Integer Idlocation;
+    private Long Idlocation;
 
     @Column(name="location")
     private String location;
 
-    public Integer getIdlocation() {
+    public Long getIdlocation() {
         return Idlocation;
     }
 
-    public void setIdlocation(Integer idlocation) {
+    public void setIdlocation(Long idlocation) {
         Idlocation = idlocation;
     }
 

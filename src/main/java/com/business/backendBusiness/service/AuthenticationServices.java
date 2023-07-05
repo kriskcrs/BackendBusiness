@@ -10,7 +10,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1")
 @CrossOrigin
 public class AuthenticationServices {
 

@@ -3,8 +3,11 @@ package com.business.backendBusiness.service;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 public class md5 {
+
+    private UUID sessionId;
 
     public String encode(String entrada){
         try {
@@ -21,4 +24,14 @@ public class md5 {
             throw new RuntimeException(e);
         }
     }
+
+
+    public UUID SessionManager(){
+       return sessionId = UUID.randomUUID();
+    }
+
+    public UUID getSessionId() {
+        return sessionId;
+    }
+
 }

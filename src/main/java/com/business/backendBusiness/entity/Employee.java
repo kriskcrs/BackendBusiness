@@ -14,12 +14,8 @@ public class Employee {
     @Id
     @Column(name = "idemployee", nullable = false)
     private Long idemployee;
-
-
     @Column(name = "rate")
     private Double rate;
-
-
     @Column(name="hire_date")
     private Date hireDate;
     @Column(name="dob_date")

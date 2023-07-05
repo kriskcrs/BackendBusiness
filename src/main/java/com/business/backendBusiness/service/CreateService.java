@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("create")
+@RequestMapping("v2")
 @CrossOrigin
 public class CreateService {
+    public int id;
     @Autowired
     PersonRepository personRepository;
     @Autowired
@@ -28,8 +29,7 @@ public class CreateService {
     @PostMapping(path = "/person")
     private Object createPerson(@RequestBody Person person) {
         try {
-            int id = personRepository.findAll().size();
-            id++;
+            id = personRepository.findAll().size();id++;
             person.setIdperson((long) id);
             personRepository.save(person);
             //create user
@@ -40,6 +40,7 @@ public class CreateService {
             int idUser = userRepository.findAll().size();
             idUser++;
             userData.setIduser((long) idUser);
+            System.out.println("uuid -> " + new md5().SessionManager());
             userRepository.save(userData);
             return userData;
         } catch (Exception e) {
@@ -49,10 +50,11 @@ public class CreateService {
         }
     }
 
-
     @PostMapping(path = "/location")
     private Location createLocation(@RequestBody Location location) {
         try {
+            id = locationRepository.findAll().size();id++;
+            location.setIdlocation((long) id);
             return locationRepository.save(location);
         } catch (Exception e) {
             System.out.println("Error createLocation -> " + e.getMessage());
@@ -64,6 +66,8 @@ public class CreateService {
     @PostMapping(path = "/state")
     private State createState(@RequestBody State state) {
         try {
+            id = stateRepository.findAll().size();id++;
+            state.setIdstate((long) id);
             return stateRepository.save(state);
         } catch (Exception e) {
             System.out.println("Error createState -> " + e.getMessage());
@@ -75,6 +79,8 @@ public class CreateService {
     @PostMapping(path = "/employee")
     private Employee createState(@RequestBody Employee employee) {
         try {
+            id = employeeRepository.findAll().size();id++;
+            employee.setIdemployee((long) id);
             return employeeRepository.save(employee);
         } catch (Exception e) {
             System.out.println("Error createEmployee -> " + e.getMessage());
@@ -86,6 +92,8 @@ public class CreateService {
     @PostMapping(path = "/work")
     private Work createState(@RequestBody Work work) {
         try {
+            id = workRepository.findAll().size();id++;
+            work.setIdwork((long) id);
             return workRepository.save(work);
         } catch (Exception e) {
             System.out.println("Error createWork -> " + e.getMessage());
@@ -97,6 +105,8 @@ public class CreateService {
     @PostMapping(path = "/userUpdate")
     private User updateUser(@RequestBody User user) {
         try {
+            id = userRepository.findAll().size();id++;
+            user.setIduser((long) id);
             return userRepository.save(user);
         } catch (Exception e) {
             System.out.println("Error updateUser -> " + e.getMessage());
@@ -104,7 +114,6 @@ public class CreateService {
             return null;
         }
     }
-
 
 
 }
