@@ -1,20 +1,18 @@
 package com.business.backendBusiness.service;
 
-
 import com.business.backendBusiness.Repository.*;
 import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/v1")
 @CrossOrigin
 public class AuthenticationServices {
+
 
     @Autowired
     UserRepository userRepository;
@@ -34,6 +32,8 @@ public class AuthenticationServices {
     private LoginData login(@RequestBody LoginData loginData) {
         try {
             System.out.println("login -> " + loginData.getUser().getUser());
+
+
             //setter user and password
             loginData.getUser().setUser((loginData.getUser().getUser()).toUpperCase());
             loginData.getUser().setPassword(new EncodeUUID().encode(loginData.getUser().getPassword()));
@@ -41,7 +41,7 @@ public class AuthenticationServices {
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
             //registry history
-            System.out.println("registry history -> true" );
+            System.out.println("registry history -> true");
             id = historySessionRepository.findAll().size();
             id++;
             loginData.getHistorySession().setIdhistorySession(id);
@@ -75,8 +75,10 @@ public class AuthenticationServices {
         }
     }
 
+    @GetMapping(path = "/revoke/{id}")
+    private void logout(@RequestBody LoginData loginData){
 
 
-
+    }
 
 }
