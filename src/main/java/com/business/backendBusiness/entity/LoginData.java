@@ -4,27 +4,32 @@ import java.util.Optional;
 
 public class LoginData {
 
-    private Optional<User> user;
-    private Optional<HistorySession> historySession;
+    private User user;
+    private HistorySession historySession;
+    private String Message;
 
-    public LoginData(Optional<User> user, Optional<HistorySession> historySession) {
-        this.user = user;
-        this.historySession = historySession;
-    }
 
-    public Optional<User> getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Optional<User> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Optional<HistorySession> getHistorySession() {
+    public HistorySession getHistorySession() {
         return historySession;
     }
 
-    public void setHistorySession(Optional<HistorySession> historySession) {
+    public void setHistorySession(HistorySession historySession) {
         this.historySession = historySession;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
     }
 }

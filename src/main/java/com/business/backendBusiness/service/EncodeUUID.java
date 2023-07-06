@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-public class md5 {
+public class EncodeUUID {
 
     private UUID sessionId;
 

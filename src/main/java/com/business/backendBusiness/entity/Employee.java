@@ -18,8 +18,7 @@ public class Employee {
     private Double rate;
     @Column(name="hire_date")
     private Date hireDate;
-    @Column(name="dob_date")
-    private Date dobDate;
+
     @Column(name="person_idperson")
     private Long personIdperson;
     @Column(name="location_idlocation")
@@ -49,14 +48,6 @@ public class Employee {
 
     public void setHireDate(Date hireDate) {
         this.hireDate = hireDate;
-    }
-
-    public Date getDobDate() {
-        return dobDate;
-    }
-
-    public void setDobDate(Date dobDate) {
-        this.dobDate = dobDate;
     }
 
     public Long getPersonIdperson() {

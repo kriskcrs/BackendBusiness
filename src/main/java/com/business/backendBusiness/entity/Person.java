@@ -3,6 +3,8 @@ package com.business.backendBusiness.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name = "person")
@@ -10,7 +12,8 @@ public class Person {
     @Id
     @Column(name = "idperson", nullable = false)
     private Long idperson;
-
+    @Column(name="dob_date")
+    private Date dobDate;
     @Column(name = "last_name")
     private String lastName;
     @Column(name = "first_name")
@@ -70,5 +73,13 @@ public class Person {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getDobDate() {
+        return dobDate;
+    }
+
+    public void setDobDate(Date dobDate) {
+        this.dobDate = dobDate;
     }
 }

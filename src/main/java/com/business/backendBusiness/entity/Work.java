@@ -40,10 +40,6 @@ public class Work {
     @Column(name="employee_idemployee")
     private Long employeeIdemployee;
 
-    @Column(name="state_idstate")
-    private Long stateIdstate;
-
-
 
     public Long getIdwork() {
         return idwork;
@@ -117,11 +113,5 @@ public class Work {
         this.employeeIdemployee = employeeIdemployee;
     }
 
-    public Long getStateIdstate() {
-        return stateIdstate;
-    }
 
-    public void setStateIdstate(Long stateIdstate) {
-        this.stateIdstate = stateIdstate;
-    }
 }

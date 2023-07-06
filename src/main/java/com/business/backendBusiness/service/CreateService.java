@@ -6,18 +6,17 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.Calendar;
-import java.util.Locale;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("v2")
 @CrossOrigin
 public class CreateService {
-    public int id;
+    public long id;
+    public long idP;
+    public long idE;
+    public long idU;
+    public boolean sessionValid = false;
     @Autowired
     PersonRepository personRepository;
     @Autowired
@@ -32,21 +31,37 @@ public class CreateService {
     WorkRepository workRepository;
     @Autowired
     RolRepository rolRepository;
+    @Autowired
+    HistorySessionRepository historySessionRepository;
+
 
     @PostMapping(path = "/person")
-    private CreateData createPerson(@RequestBody Person person) {
+    private CreateData createPersonEmployeeUser(@RequestBody CreateData createData) {
         try {
-            CreateData createData = new CreateData();
-            id = personRepository.findAll().size();
-            id++;
-            person.setIdperson((long) id);
-            personRepository.save(person);
-            createData.setPerson(person);
+            //create person
+            idP = personRepository.findAll().size();
+            idP++;
+            createData.getPerson().setIdperson(idP);
+            createData.setPerson(createData.getPerson());
+            personRepository.save(createData.getPerson());
 
-            Employee employee = new Employee();
-            employee.setPersonIdperson(person.getIdperson());
-            createData.setEmployee(employee);
-            createData.setUser(createEmployee(employee));
+            //create Employee
+            idE = employeeRepository.findAll().size();
+            idE++;
+            createData.getEmployee().setIdemployee(idE);
+            createData.getEmployee().setPersonIdperson(idP);
+            createData.setEmployee(createData.getEmployee());
+            employeeRepository.save(createData.getEmployee());
+
+            //create user
+            idU = userRepository.findAll().size();
+            idU++;
+            createData.getUser().setIduser(idU);
+            createData.getUser().setPassword(new EncodeUUID().encode(createData.getUser().getPassword()));
+            createData.getUser().setUser((createData.getPerson().getFirstName().charAt(0) + createData.getPerson().getLastName() + idP).toUpperCase());
+            createData.getUser().setEmployeeIdemployee(idE);
+            createData.setUser(createData.getUser());
+            userRepository.save(createData.getUser());
 
             return createData;
         } catch (Exception e) {
@@ -56,36 +71,6 @@ public class CreateService {
         }
     }
 
-    private User createEmployee(@RequestBody Employee employee) {
-        try {
-            //create employee
-            id = employeeRepository.findAll().size();
-            id++;
-            employee.setIdemployee((long) id);
-            employee.setHireDate(new Date(2023, Calendar.JULY, 1));
-            employee.setDobDate(null);
-            employee.setRate(15.54);
-            Optional<Person> personData = personRepository.findById(employee.getPersonIdperson());
-            employee.setLocationIdlocation((long) 1);
-            employee.setStateIdstate((long) 1);
-            employeeRepository.save(employee);
-            //create user
-            User userData = new User();
-            int idUser = userRepository.findAll().size();
-            idUser++;
-            userData.setIduser((long) idUser);
-            userData.setRolIdrol((long) 1);
-            userData.setUser((personData.get().getFirstName().charAt(0) + personData.get().getLastName() + id).toUpperCase());
-            userData.setPassword(new md5().encode("1"));
-            userData.setEmployeeIdemployee(employee.getPersonIdperson());
-            userRepository.save(userData);
-            return userData;
-        } catch (Exception e) {
-            System.out.println("Error createEmployee -> " + e.getMessage());
-            System.out.println("Error Cause createEmployee -> " + e.getCause());
-            return null;
-        }
-    }
 
     @PostMapping(path = "/work")
     private Work createWork(@RequestBody Work work) {
@@ -129,37 +114,17 @@ public class CreateService {
         }
     }
 
-    @PostMapping(path = "/userUpdate")
-    private User updateUser(@RequestBody User user) {
+
+
+    public void validationSession(String idSession, Long user) {
         try {
-            return userRepository.save(user);
+            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(idSession, user);
+            sessionValid = true;
+            System.out.println("encontrado");
         } catch (Exception e) {
-            System.out.println("Error updateUser -> " + e.getMessage());
-            System.out.println("Error Cause updateUser -> " + e.getCause());
-            return null;
+            System.out.println("fallo");
         }
     }
 
-    @PostMapping(path = "/employeeUpdate")
-    private Employee updateEmployee(@RequestBody Employee employee) {
-        try {
-            return employeeRepository.save(employee);
-        } catch (Exception e) {
-            System.out.println("Error updateUser -> " + e.getMessage());
-            System.out.println("Error Cause updateUser -> " + e.getCause());
-            return null;
-        }
-    }
-
-    @PostMapping(path = "/rolUpdate")
-    private Rol updateRol(@RequestBody Rol rol) {
-        try {
-            return rolRepository.save(rol);
-        } catch (Exception e) {
-            System.out.println("Error updateUser -> " + e.getMessage());
-            System.out.println("Error Cause updateUser -> " + e.getCause());
-            return null;
-        }
-    }
 
 }
