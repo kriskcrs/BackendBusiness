@@ -2,10 +2,7 @@ package com.business.backendBusiness.service;
 
 
 import com.business.backendBusiness.Repository.*;
-import com.business.backendBusiness.entity.Employee;
-import com.business.backendBusiness.entity.HistorySession;
-import com.business.backendBusiness.entity.User;
-import com.business.backendBusiness.entity.Work;
+import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +27,19 @@ public class AuthenticationServices {
     EmployeeRepository employeeRepository;
     @Autowired
     WorkRepository workRepository;
+    @Autowired
+    RolRepository rolRepository;
+
 
     @PostMapping(path = "/authentications")
-    private Optional<User> login(@RequestBody User user) {
+    private LoginData login(@RequestBody User user) {
         try {
             System.out.println("login -> " + user.getUser());
             user.setUser((user.getUser()).toUpperCase());
             user.setPassword(new md5().encode(user.getPassword()));
             Optional<User> userFind = userRepository.findByUserAndPassword(user.getUser(), user.getPassword());
+
+
            //registra historial
             id = historySessionRepository.findAll().size();
             id++;
@@ -48,10 +50,17 @@ public class AuthenticationServices {
             //registra trabajo
             Optional<Employee> employee = employeeRepository.findById(userFind.get().getEmployeeIdemployee());
             registryWork(employee);
-            return userFind;
+
+
+            HistorySession historySessionData = new HistorySession();
+            Optional<HistorySession> history = historySessionRepository.findById(userFind.get().getIduser());
+            historySessionData.setIdsession(history.get().getIdsession());
+
+            return new LoginData(userFind,history);
+
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
-            return Optional.ofNullable(user);
+            return null;
         }
     }
 
