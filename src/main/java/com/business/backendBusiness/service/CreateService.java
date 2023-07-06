@@ -34,15 +34,21 @@ public class CreateService {
     RolRepository rolRepository;
 
     @PostMapping(path = "/person")
-    private Object createPerson(@RequestBody Person person) {
+    private CreateData createPerson(@RequestBody Person person) {
         try {
+            CreateData createData = new CreateData();
             id = personRepository.findAll().size();
             id++;
             person.setIdperson((long) id);
             personRepository.save(person);
+            createData.setPerson(person);
+
             Employee employee = new Employee();
             employee.setPersonIdperson(person.getIdperson());
-            return createEmployee(employee);
+            createData.setEmployee(employee);
+            createData.setUser(createEmployee(employee));
+
+            return createData;
         } catch (Exception e) {
             System.out.println("Error CreatePerson -> " + e.getMessage());
             System.out.println("Error Cause CreatePerson -> " + e.getCause());

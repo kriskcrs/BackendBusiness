@@ -2,11 +2,10 @@ package com.business.backendBusiness.entity;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User  {
 
     @Id
     @Column(name = "iduser", nullable = false)
