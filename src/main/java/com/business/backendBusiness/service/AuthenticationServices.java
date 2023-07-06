@@ -65,6 +65,7 @@ public class AuthenticationServices {
             workRepository.save(work);
             //complete
             loginData.setMessage("successful");
+            loginData.getUser().setPassword(null);
             return loginData;
 
         } catch (Exception e) {
