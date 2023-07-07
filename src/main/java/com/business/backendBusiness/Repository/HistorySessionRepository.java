@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface HistorySessionRepository extends JpaRepository<HistorySession,Long> {
 
     public Optional<HistorySession> findByIdsessionAndUserIduser(String idsession,Long user);
+
+
 }

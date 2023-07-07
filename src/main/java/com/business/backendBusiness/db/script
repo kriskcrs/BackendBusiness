@@ -1,0 +1,197 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema business
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema business
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `business` DEFAULT CHARACTER SET utf8 ;
+USE `business` ;
+
+-- -----------------------------------------------------
+-- Table `business`.`person`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`person` (
+                                                   `idperson` INT NOT NULL AUTO_INCREMENT,
+                                                   `last_name` VARCHAR(60) NOT NULL,
+    `first_name` VARCHAR(60) NOT NULL,
+    `ssn_itin` VARCHAR(60) NOT NULL,
+    `phone` VARCHAR(20) NULL,
+    `address` VARCHAR(200) NULL,
+    PRIMARY KEY (`idperson`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`location`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`location` (
+                                                     `idlocation` INT NOT NULL AUTO_INCREMENT,
+                                                     `location` VARCHAR(200) NOT NULL,
+    PRIMARY KEY (`idlocation`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`state`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`state` (
+                                                  `idstate` INT NOT NULL AUTO_INCREMENT,
+                                                  `state` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`idstate`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`employee`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`employee` (
+                                                     `idemployee` INT NOT NULL AUTO_INCREMENT,
+                                                     `hire_date` DATETIME NOT NULL,
+                                                     `dob_date` DATETIME NULL,
+                                                     `rate` DOUBLE NOT NULL,
+                                                     `person_idperson` INT NOT NULL,
+                                                     `location_idlocation` INT NOT NULL,
+                                                     `state_idstate` INT NOT NULL,
+                                                     PRIMARY KEY (`idemployee`),
+    INDEX `fk_employee_person1_idx` (`person_idperson` ASC) VISIBLE,
+    INDEX `fk_employee_location1_idx` (`location_idlocation` ASC) VISIBLE,
+    INDEX `fk_employee_state1_idx` (`state_idstate` ASC) VISIBLE,
+    CONSTRAINT `fk_employee_person1`
+    FOREIGN KEY (`person_idperson`)
+    REFERENCES `business`.`person` (`idperson`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_employee_location1`
+    FOREIGN KEY (`location_idlocation`)
+    REFERENCES `business`.`location` (`idlocation`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_employee_state1`
+    FOREIGN KEY (`state_idstate`)
+    REFERENCES `business`.`state` (`idstate`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`work`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`work` (
+                                                 `idwork` INT NOT NULL AUTO_INCREMENT,
+                                                 `date_work` DATE NOT NULL,
+                                                 `start_time` DATETIME NOT NULL,
+                                                 `end_time` DATETIME NULL,
+                                                 `total_hour` INT NOT NULL,
+                                                 `start_geo` VARCHAR(20) NULL,
+    `end_geo` VARCHAR(20) NULL,
+    `rate_today` DOUBLE NOT NULL,
+    `employee_idemployee` INT NOT NULL,
+    `state_idstate` INT NOT NULL,
+    PRIMARY KEY (`idwork`),
+    INDEX `fk_work_employee_idx` (`employee_idemployee` ASC) VISIBLE,
+    INDEX `fk_work_state1_idx` (`state_idstate` ASC) VISIBLE,
+    CONSTRAINT `fk_work_employee`
+    FOREIGN KEY (`employee_idemployee`)
+    REFERENCES `business`.`employee` (`idemployee`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_work_state1`
+    FOREIGN KEY (`state_idstate`)
+    REFERENCES `business`.`state` (`idstate`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`rol`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`rol` (
+                                                `idrol` INT NOT NULL,
+                                                `rol` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`idrol`))
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`user`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`user` (
+                                                 `iduser` INT NOT NULL,
+                                                 `user` VARCHAR(50) NOT NULL,
+    `password` VARCHAR(200) NOT NULL,
+    `rol_idrol` INT NOT NULL,
+    `employee_idemployee` INT NOT NULL,
+    PRIMARY KEY (`iduser`),
+    UNIQUE INDEX `user_UNIQUE` (`user` ASC) VISIBLE,
+    UNIQUE INDEX `iduser_UNIQUE` (`iduser` ASC) VISIBLE,
+    INDEX `fk_user_rol1_idx` (`rol_idrol` ASC) VISIBLE,
+    INDEX `fk_user_employee1_idx` (`employee_idemployee` ASC) VISIBLE,
+    CONSTRAINT `fk_user_rol1`
+    FOREIGN KEY (`rol_idrol`)
+    REFERENCES `business`.`rol` (`idrol`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_user_employee1`
+    FOREIGN KEY (`employee_idemployee`)
+    REFERENCES `business`.`employee` (`idemployee`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `business`.`history_session`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `business`.`history_session` (
+                                                            `idhistory_session` INT NOT NULL,
+                                                            `idsession` VARCHAR(100) NOT NULL,
+    `user_iduser` INT NOT NULL,
+    `state_idstate` INT NOT NULL,
+    PRIMARY KEY (`idhistory_session`),
+    INDEX `fk_history_session_user1_idx` (`user_iduser` ASC) VISIBLE,
+    INDEX `fk_history_session_state1_idx` (`state_idstate` ASC) VISIBLE,
+    CONSTRAINT `fk_history_session_user1`
+    FOREIGN KEY (`user_iduser`)
+    REFERENCES `business`.`user` (`iduser`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+    CONSTRAINT `fk_history_session_state1`
+    FOREIGN KEY (`state_idstate`)
+    REFERENCES `business`.`state` (`idstate`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+    ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+
+-- INSERT
+
+
+insert into location  value (1,'Guatemala');
+
+insert into state  value (1,'Activo');
+insert into state  value (2,'Cancelado');
+insert into state  value (3,'Inactivo');
+
+insert into rol value (1,'root');
+insert into rol value (2,'Admin');
+insert into rol value (3,'employee');
+
+INSERT into person  values( 1,'root','','1','1','1','2023-07-01');
+insert into employee  values(1,'2023-07-01',0,1,1,1);
+insert into user values(1,'root','21232f297a57a5a743894a0e4a801fc3',1,1);
