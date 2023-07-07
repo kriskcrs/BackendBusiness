@@ -83,7 +83,7 @@ public class AuthenticationServices {
     @GetMapping(path = "/revoke/{id}")
     private void logout(@RequestBody LoginData loginData){
 
-
+ historySessionRepository.deleteHistorySessionByIdsession(loginData.getHistorySession().getIdsession());
     }
 
 }

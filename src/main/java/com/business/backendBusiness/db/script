@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS `business`.`person` (
                                                    `last_name` VARCHAR(60) NOT NULL,
     `first_name` VARCHAR(60) NOT NULL,
     `ssn_itin` VARCHAR(60) NOT NULL,
-    `phone` VARCHAR(20) NULL,
-    `address` VARCHAR(200) NULL,
+    `phone` VARCHAR(20) NOT NULL,
+    `address` VARCHAR(200) NOT NULL,
+    `dob_date` DATE NOT NULL,
     PRIMARY KEY (`idperson`))
     ENGINE = InnoDB;
 
@@ -54,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `business`.`state` (
 CREATE TABLE IF NOT EXISTS `business`.`employee` (
                                                      `idemployee` INT NOT NULL AUTO_INCREMENT,
                                                      `hire_date` DATETIME NOT NULL,
-                                                     `dob_date` DATETIME NULL,
                                                      `rate` DOUBLE NOT NULL,
                                                      `person_idperson` INT NOT NULL,
                                                      `location_idlocation` INT NOT NULL,
@@ -94,18 +94,11 @@ CREATE TABLE IF NOT EXISTS `business`.`work` (
     `end_geo` VARCHAR(20) NULL,
     `rate_today` DOUBLE NOT NULL,
     `employee_idemployee` INT NOT NULL,
-    `state_idstate` INT NOT NULL,
     PRIMARY KEY (`idwork`),
     INDEX `fk_work_employee_idx` (`employee_idemployee` ASC) VISIBLE,
-    INDEX `fk_work_state1_idx` (`state_idstate` ASC) VISIBLE,
     CONSTRAINT `fk_work_employee`
     FOREIGN KEY (`employee_idemployee`)
     REFERENCES `business`.`employee` (`idemployee`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_work_state1`
-    FOREIGN KEY (`state_idstate`)
-    REFERENCES `business`.`state` (`idstate`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
     ENGINE = InnoDB;
@@ -176,10 +169,7 @@ SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-
-
-
--- INSERT
+--insert
 
 
 insert into location  value (1,'Guatemala');
