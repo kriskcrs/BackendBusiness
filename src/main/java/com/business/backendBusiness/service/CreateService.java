@@ -13,11 +13,7 @@ import java.util.Optional;
 @RequestMapping("v2")
 @CrossOrigin
 public class CreateService {
-    public long id;
-    public long idP;
-    public long idE;
-    public long idU;
-    public boolean sessionValid = false;
+
     @Autowired
     PersonRepository personRepository;
     @Autowired
@@ -31,10 +27,13 @@ public class CreateService {
     @Autowired
     WorkRepository workRepository;
     @Autowired
-    RolRepository rolRepository;
-    @Autowired
     HistorySessionRepository historySessionRepository;
 
+    public long id;
+    public long idP;
+    public long idE;
+    public long idU;
+    public boolean sessionValid = false;
 
     @PostMapping(path = "/person")
     private CreateData createPersonEmployeeUser(@RequestBody CreateData createData) {
