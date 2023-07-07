@@ -40,39 +40,44 @@ public class AuthenticationServices {
             //find user
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
-            //registry history
-            System.out.println("registry history -> true");
-            id = historySessionRepository.findAll().size();
-            id++;
-            loginData.getHistorySession().setIdhistorySession(id);
-            loginData.getHistorySession().setIdsession(String.valueOf(new EncodeUUID().SessionManager()));
-            loginData.getHistorySession().setUserIduser(userFind.getIduser());
-            loginData.getHistorySession().setStateIdstate(1L);
-            loginData.setHistorySession(loginData.getHistorySession());
-            historySessionRepository.save(loginData.getHistorySession());
-            //registra trabajo
-            Optional<Employee> employee = employeeRepository.findById(userFind.getEmployeeIdemployee());
-            System.out.println("work record -> " + employee.isPresent());
-            id = workRepository.findAll().size();
-            id++;
-            Work work = new Work();
-            work.setIdwork(id);
-            work.setDateWork(new Date());
-            work.setRateToday(employee.get().getRate());
-            work.setTotalHour(5);
-            work.setStartTime(new Date());
-            work.setEmployeeIdemployee(employee.get().getIdemployee());
-            workRepository.save(work);
-            //complete
-            loginData.setMessage("successful");
-            loginData.getUser().setPassword(null);
-            return loginData;
+
+
+            if(userFind != null){
+                //registry history
+                System.out.println("registry history -> true");
+                id = historySessionRepository.findAll().size();
+                id++;
+                loginData.getHistorySession().setIdhistorySession(id);
+                loginData.getHistorySession().setIdsession(String.valueOf(new EncodeUUID().SessionManager()));
+                loginData.getHistorySession().setUserIduser(userFind.getIduser());
+                loginData.getHistorySession().setStateIdstate(1L);
+                loginData.setHistorySession(loginData.getHistorySession());
+                historySessionRepository.save(loginData.getHistorySession());
+                //registra trabajo
+                Optional<Employee> employee = employeeRepository.findById(userFind.getEmployeeIdemployee());
+                System.out.println("work record -> " + employee.isPresent());
+                id = workRepository.findAll().size();
+                id++;
+                Work work = new Work();
+                work.setIdwork(id);
+                work.setDateWork(new Date());
+                work.setRateToday(employee.get().getRate());
+                work.setTotalHour(5);
+                work.setStartTime(new Date());
+                work.setEmployeeIdemployee(employee.get().getIdemployee());
+                workRepository.save(work);
+                //complete
+                loginData.setMessage("successful");
+                loginData.getUser().setPassword(null);
+                return loginData;
+            }
 
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
-            loginData.setMessage("failed login");
-            return loginData;
         }
+        loginData.setHistorySession(null);
+        loginData.setMessage("failed login");
+        return loginData;
     }
 
     @GetMapping(path = "/revoke/{id}")
