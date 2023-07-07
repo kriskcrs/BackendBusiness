@@ -42,7 +42,7 @@ public class AuthenticationServices {
             loginData.setUser(userFind);
 
 
-            if(userFind != null){
+            if (userFind != null) {
                 //registry history
                 System.out.println("registry history -> true");
                 id = historySessionRepository.findAll().size();
@@ -80,10 +80,19 @@ public class AuthenticationServices {
         return loginData;
     }
 
-    @GetMapping(path = "/revoke/{id}")
-    private void logout(@RequestBody LoginData loginData){
+    @PostMapping(path = "/revoke")
+    private String logout(@RequestBody LoginData loginData) {
+        try {
+            System.out.println("delete -> " + loginData.getHistorySession().getIdhistorySession());
+            User user = userRepository.findByUser(loginData.getUser().getUser());
+            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(loginData.getHistorySession().getIdsession(), user.getIduser());
+            historySessionRepository.deleteById(historySession.get().getIdhistorySession());
+            return "Delete OK" ;
+        }catch (Exception e){
+            System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
+            return "No present data";
+        }
 
- historySessionRepository.deleteHistorySessionByIdsession(loginData.getHistorySession().getIdsession());
     }
 
 }
