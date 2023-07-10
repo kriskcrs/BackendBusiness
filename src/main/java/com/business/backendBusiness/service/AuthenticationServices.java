@@ -28,10 +28,9 @@ public class AuthenticationServices {
     private LoginData login(@RequestBody LoginData loginData) {
         try {
 
-            if(loginData.getUser().getPassword().equals("1")){
+            if (loginData.getUser().getPassword().equals("1")) {
                 firstLogin = true;
             }
-
             //setter user and password
             loginData.getUser().setUser((loginData.getUser().getUser()).toUpperCase());
             loginData.getUser().setPassword(new EncodeUUID().encode(loginData.getUser().getPassword()));
@@ -42,11 +41,11 @@ public class AuthenticationServices {
             if (userFind != null && !firstLogin) {
                 //registry history
                 System.out.println("first login -> " + firstLogin);
-                return registryUser(loginData,userFind);
-            }else{
+                return registryUser(loginData, userFind);
+            } else {
                 System.out.println("first login -> " + firstLogin);
                 assert userFind != null;
-                LoginData loginDataTemp =  registryUser(loginData,userFind);
+                LoginData loginDataTemp = registryUser(loginData, userFind);
                 loginDataTemp.setMessage("1");
                 return loginDataTemp;
             }
@@ -59,8 +58,8 @@ public class AuthenticationServices {
     }
 
 
-
-    public LoginData registryUser(LoginData loginData, User userFind){
+    @PostMapping("/registry")
+    public LoginData registryUser(LoginData loginData, User userFind) {
         long id = historySessionRepository.findAll().size();
         id++;
         loginData.getHistorySession().setIdhistorySession(id);
@@ -71,8 +70,16 @@ public class AuthenticationServices {
         historySessionRepository.save(loginData.getHistorySession());
         //registra trabajo
         Optional<Employee> employee = employeeRepository.findById(userFind.getEmployeeIdemployee());
+        registryWork(employee);
+        //complete
+        loginData.setMessage("successful");
+        loginData.getUser().setPassword(null);
+        return loginData;
+    }
+
+    public void registryWork(Optional<Employee> employee) {
         System.out.println("work record -> " + employee.isPresent());
-        id = workRepository.findAll().size();
+        long id = workRepository.findAll().size();
         id++;
         Work work = new Work();
         work.setIdwork(id);
@@ -82,11 +89,6 @@ public class AuthenticationServices {
         work.setStartTime(new Date());
         work.setEmployeeIdemployee(employee.get().getIdemployee());
         workRepository.save(work);
-        //complete
-        loginData.setMessage("successful");
-        loginData.getUser().setPassword(null);
-
-        return loginData;
     }
 
     @PostMapping(path = "/revoke")
@@ -96,12 +98,11 @@ public class AuthenticationServices {
             User user = userRepository.findByUser(loginData.getUser().getUser());
             Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(loginData.getHistorySession().getIdsession(), user.getIduser());
             historySessionRepository.deleteById(historySession.get().getIdhistorySession());
-            return "Delete OK" ;
-        }catch (Exception e){
+            return "Delete OK";
+        } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
             return "No present data";
         }
-
     }
 
 }
