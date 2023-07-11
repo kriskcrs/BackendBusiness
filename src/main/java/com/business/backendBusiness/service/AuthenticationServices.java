@@ -22,11 +22,13 @@ public class AuthenticationServices {
     EmployeeRepository employeeRepository;
     @Autowired
     WorkRepository workRepository;
-    boolean firstLogin = false;
+
 
     @PostMapping(path = "/authentications")
     private LoginData login(@RequestBody LoginData loginData) {
         try {
+            boolean firstLogin = false;
+            System.out.println("login " + loginData.getUser().getUser());
             if (loginData.getUser().getPassword().equals("1")) {
                 firstLogin = true;
             }
@@ -36,16 +38,13 @@ public class AuthenticationServices {
             //find user
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
-            if (userFind != null && !firstLogin) {
+            if (!firstLogin) {
                 //registry history
-                System.out.println("first login -> " + firstLogin);
-                return registryUser(loginData, userFind);
-            } else {
-                System.out.println("first login -> " + firstLogin);
-                assert userFind != null;
-                LoginData loginDataTemp = registryUser(loginData, userFind);
-                loginDataTemp.setMessage("1");
-                return loginDataTemp;
+                return  registryUser(loginData, userFind);
+            } else  {
+                loginData = registryUser(loginData, userFind);
+                loginData.setMessage("1");
+                return loginData;
             }
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
@@ -90,7 +89,7 @@ public class AuthenticationServices {
     public String registryWork(@RequestBody CreateData createData) {
         try {
             System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
-            if (new KeepAlive().validationSession(createData)) {
+            if (validationSession(createData)) {
                 long id = workRepository.findAll().size();
                 id++;
                 Work work = new Work();
@@ -112,7 +111,7 @@ public class AuthenticationServices {
     @PostMapping("/registryWorkFinish")
     public String unregistryWork(@RequestBody CreateData createData) {
         try {
-            if (new KeepAlive().validationSession(createData)) {
+            if (validationSession(createData)) {
                 System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
                 long id = workRepository.findAll().size();
                 id++;
@@ -131,6 +130,28 @@ public class AuthenticationServices {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
         return "Error";
+    }
+
+
+    public boolean validationSession(CreateData createData) {
+        try {
+
+
+            Long user = createData.getUser().getIduser();
+            String idsession = createData.getHistorySession().getIdsession();
+            System.out.println("user id -> " + user + "\nsession -> " + idsession);
+            Optional<HistorySession> historySession =  historySessionRepository.findByIdsessionAndUserIduser(idsession, user);
+            System.out.println("sesion encontrada -> "+historySession);
+            if (historySession.isPresent()) {
+                if (historySession.get().getStateIdstate() == 1) {
+                    return   true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
+            return  false;
+        }
+        return false;
     }
 
 }
