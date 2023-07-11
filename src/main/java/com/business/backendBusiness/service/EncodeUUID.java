@@ -14,11 +14,11 @@ public class EncodeUUID {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] messageDigest = md.digest(entrada.getBytes());
             BigInteger number = new BigInteger(1, messageDigest);
-            String hashtext = number.toString(16);
+            StringBuilder hashtext = new StringBuilder(number.toString(16));
             while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+                hashtext.insert(0, "0");
             }
-            return hashtext;
+            return hashtext.toString();
         }
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);

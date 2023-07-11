@@ -1,7 +1,5 @@
 package com.business.backendBusiness.entity;
 
-import java.util.Optional;
-
 public class LoginData {
 
     private User user;

@@ -6,9 +6,6 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
-
 @RestController
 @RequestMapping("v2")
 @CrossOrigin
@@ -33,12 +30,11 @@ public class CreateService {
     public long idP;
     public long idE;
     public long idU;
-    public boolean sessionValid = false;
 
     @PostMapping(path = "/person")
     private CreateData createPersonEmployeeUser(@RequestBody CreateData createData) {
         try {
-            if (validationSession(createData)) {
+            if (new KeepAlive().validationSession(createData)) {
                 //create person
                 idP = personRepository.findAll().size();
                 idP++;
@@ -76,10 +72,15 @@ public class CreateService {
     }
 
 
+    @PostMapping(path = "/employee")
+    private Employee createEmployee(@RequestBody CreateData createData){
+        return employeeRepository.save(createData.getEmployee());
+    }
+
     @PostMapping(path = "/work")
     private Work createWork(@RequestBody CreateData createData) {
         try {
-            if (validationSession(createData)) {
+            if (new KeepAlive().validationSession(createData)) {
                 id = workRepository.findAll().size();
                 id++;
                 createData.getWork().setIdwork(id);
@@ -95,7 +96,7 @@ public class CreateService {
     @PostMapping(path = "/location")
     private Location createLocation(@RequestBody CreateData createData) {
         try {
-            if (validationSession(createData)) {
+            if (new KeepAlive().validationSession(createData)) {
                 id = locationRepository.findAll().size();
                 id++;
                 createData.getLocation().setIdlocation(id);
@@ -111,7 +112,7 @@ public class CreateService {
     @PostMapping(path = "/state")
     private State createState(@RequestBody CreateData createData) {
         try {
-            if (validationSession(createData)) {
+            if (new KeepAlive().validationSession(createData)) {
                 id = stateRepository.findAll().size();
                 id++;
                 createData.getState().setIdstate(id);
@@ -123,24 +124,6 @@ public class CreateService {
 
         }
         return null;
-    }
-
-    public boolean validationSession(CreateData createData) {
-        try {
-            long iduser = createData.getUser().getIduser();
-            String idsession = createData.getHistorySession().getIdsession();
-            System.out.println("user id -> " + iduser + "\nsession -> " + idsession);
-            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(idsession, iduser);
-            System.out.println(historySession);
-            if (historySession.isPresent()) {
-                if (historySession.get().getStateIdstate() == 1) {
-                    return sessionValid = true;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error Validation -> " + e.getCause());
-        }
-        return sessionValid = false;
     }
 
 
