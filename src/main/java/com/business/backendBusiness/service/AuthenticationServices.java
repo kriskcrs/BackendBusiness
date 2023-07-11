@@ -27,7 +27,6 @@ public class AuthenticationServices {
     @PostMapping(path = "/authentications")
     private LoginData login(@RequestBody LoginData loginData) {
         try {
-
             if (loginData.getUser().getPassword().equals("1")) {
                 firstLogin = true;
             }
@@ -37,7 +36,6 @@ public class AuthenticationServices {
             //find user
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
-
             if (userFind != null && !firstLogin) {
                 //registry history
                 System.out.println("first login -> " + firstLogin);
@@ -57,8 +55,6 @@ public class AuthenticationServices {
         return loginData;
     }
 
-
-    @PostMapping("/registry")
     public LoginData registryUser(LoginData loginData, User userFind) {
         long id = historySessionRepository.findAll().size();
         id++;
@@ -68,28 +64,12 @@ public class AuthenticationServices {
         loginData.getHistorySession().setStateIdstate(1L);
         loginData.setHistorySession(loginData.getHistorySession());
         historySessionRepository.save(loginData.getHistorySession());
-        //registra trabajo
-        Optional<Employee> employee = employeeRepository.findById(userFind.getEmployeeIdemployee());
-        registryWork(employee);
         //complete
         loginData.setMessage("successful");
         loginData.getUser().setPassword(null);
         return loginData;
     }
 
-    public void registryWork(Optional<Employee> employee) {
-        System.out.println("work record -> " + employee.isPresent());
-        long id = workRepository.findAll().size();
-        id++;
-        Work work = new Work();
-        work.setIdwork(id);
-        work.setDateWork(new Date());
-        work.setRateToday(employee.get().getRate());
-        work.setTotalHour(5);
-        work.setStartTime(new Date());
-        work.setEmployeeIdemployee(employee.get().getIdemployee());
-        workRepository.save(work);
-    }
 
     @PostMapping(path = "/revoke")
     private String logout(@RequestBody LoginData loginData) {
@@ -103,6 +83,54 @@ public class AuthenticationServices {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
             return "No present data";
         }
+    }
+
+
+    @PostMapping("/registryWork")
+    public String registryWork(@RequestBody CreateData createData) {
+        try {
+            System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
+            if (new KeepAlive().validationSession(createData)) {
+                long id = workRepository.findAll().size();
+                id++;
+                Work work = new Work();
+                work.setIdwork(id);
+                work.setDateWork(new Date());
+                Optional<Employee> employeeData = employeeRepository.findById(createData.getEmployee().getIdemployee());
+                work.setRateToday(employeeData.get().getRate());
+                work.setStartTime(new Date());
+                work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
+                workRepository.save(work);
+                return "Ok";
+            }
+        } catch (Exception e) {
+            System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
+        }
+        return "Error";
+    }
+
+    @PostMapping("/registryWorkFinish")
+    public String unregistryWork(@RequestBody CreateData createData) {
+        try {
+            if (new KeepAlive().validationSession(createData)) {
+                System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
+                long id = workRepository.findAll().size();
+                id++;
+                Work work = new Work();
+                work.setIdwork(id);
+                work.setDateWork(new Date());
+                Optional<Employee> employeeData = employeeRepository.findById(createData.getEmployee().getIdemployee());
+                work.setRateToday(employeeData.get().getRate());
+                work.setStartTime(new Date());
+                work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
+                workRepository.save(work);
+                return "Ok";
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
+        }
+        return "Error";
     }
 
 }
