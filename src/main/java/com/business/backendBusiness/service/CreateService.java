@@ -72,6 +72,11 @@ public class CreateService {
     }
 
 
+    @PostMapping(path = "/employee")
+    private Employee createEmployee(@RequestBody CreateData createData){
+        return employeeRepository.save(createData.getEmployee());
+    }
+
     @PostMapping(path = "/work")
     private Work createWork(@RequestBody CreateData createData) {
         try {
