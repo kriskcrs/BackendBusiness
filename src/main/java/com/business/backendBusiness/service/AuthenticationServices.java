@@ -100,6 +100,7 @@ public class AuthenticationServices {
                 work.setStartTime(new Date());
                 work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
                 work.setTotalHour(createData.getWork().getTotalHour());
+                work.setStartGeo(createData.getWork().getStartGeo());
                 workRepository.save(work);
                 return "Ok";
             }
