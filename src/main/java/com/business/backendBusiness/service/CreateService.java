@@ -151,7 +151,7 @@ public class CreateService {
         try {
 
 
-            Long user = createData.getUser().getIduser();
+            Long user = createData.getHistorySession().getUserIduser();
             String idsession = createData.getHistorySession().getIdsession();
             System.out.println("user id -> " + user + "\nsession -> " + idsession);
             Optional<HistorySession> historySession =  historySessionRepository.findByIdsessionAndUserIduser(idsession, user);

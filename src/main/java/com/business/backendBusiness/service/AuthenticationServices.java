@@ -99,6 +99,7 @@ public class AuthenticationServices {
                 work.setRateToday(employeeData.get().getRate());
                 work.setStartTime(new Date());
                 work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
+                work.setTotalHour(createData.getWork().getTotalHour());
                 workRepository.save(work);
                 return "Ok";
             }
@@ -135,9 +136,7 @@ public class AuthenticationServices {
 
     public boolean validationSession(CreateData createData) {
         try {
-
-
-            Long user = createData.getUser().getIduser();
+            Long user = createData.getHistorySession().getUserIduser();
             String idsession = createData.getHistorySession().getIdsession();
             System.out.println("user id -> " + user + "\nsession -> " + idsession);
             Optional<HistorySession> historySession =  historySessionRepository.findByIdsessionAndUserIduser(idsession, user);
