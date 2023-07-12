@@ -77,7 +77,7 @@ public class AuthenticationServices {
             User user = userRepository.findByUser(loginData.getUser().getUser());
             Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(loginData.getHistorySession().getIdsession(), user.getIduser());
             historySessionRepository.deleteById(historySession.get().getIdhistorySession());
-            return "Delete OK";
+            return "200";
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
             return "No present data";
