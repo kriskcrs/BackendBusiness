@@ -89,6 +89,7 @@ public class AuthenticationServices {
     public String registryWork(@RequestBody CreateData createData) {
         try {
             System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
+            System.out.println(createData.getWork().getStartGeo());
             if (validationSession(createData)) {
                 long id = workRepository.findAll().size();
                 id++;

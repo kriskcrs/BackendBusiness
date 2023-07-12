@@ -83,6 +83,7 @@ public class CreateService {
     @PostMapping(path = "/work")
     private Work createWork(@RequestBody CreateData createData) {
         try {
+
             if (validationSession(createData)) {
                 id = workRepository.findAll().size();
                 id++;
@@ -149,7 +150,6 @@ public class CreateService {
 
     public boolean validationSession(CreateData createData) {
         try {
-
 
             Long user = createData.getHistorySession().getUserIduser();
             String idsession = createData.getHistorySession().getIdsession();
