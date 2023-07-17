@@ -5,6 +5,7 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -96,7 +97,7 @@ public class AuthenticationServices {
 
 
     @PostMapping("/registryWork")
-    public String registryWork(@RequestBody CreateData createData) {
+    public Work registryWork(@RequestBody CreateData createData) {
         try {
             System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
             System.out.println(createData.getWork().getStartGeo());
@@ -112,37 +113,46 @@ public class AuthenticationServices {
                 work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
                 work.setTotalHour(createData.getWork().getTotalHour());
                 work.setStartGeo(createData.getWork().getStartGeo());
-                workRepository.save(work);
-                return "Ok";
+
+                return  workRepository.save(work);
             }
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
-        return "Error";
+        return null;
     }
 
     @PostMapping("/registryWorkFinish")
-    public String unregistryWork(@RequestBody CreateData createData) {
+    public Work unregistryWork(@RequestBody CreateData createData) {
         try {
             if (validationSession(createData)) {
                 System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
-                long id = workRepository.findAll().size();
-                id++;
-                Work work = new Work();
-                work.setIdwork(id);
-                work.setDateWork(new Date());
+                Optional<Work> work = workRepository.findById(createData.getWork().getIdwork());
+                work.get().setEndTime(new Date());
                 Optional<Employee> employeeData = employeeRepository.findById(createData.getEmployee().getIdemployee());
-                work.setRateToday(employeeData.get().getRate());
-                work.setStartTime(new Date());
-                work.setEmployeeIdemployee(createData.getEmployee().getIdemployee());
-                workRepository.save(work);
-                return "Ok";
+                work.get().setRateToday(employeeData.get().getRate());
+                work.get().setEmployeeIdemployee(createData.getEmployee().getIdemployee());
+                work.get().setEndGeo(createData.getWork().getEndGeo());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String i = String.valueOf(work.get().getStartTime());
+                String e = String.valueOf(work.get().getEndTime());
+                Date fechaInicial = sdf.parse(i);
+                Date fechaFinal = sdf.parse(e);
+                long diferenciaMilisegundos = fechaFinal.getTime() - fechaInicial.getTime();
+
+                // Convertir la diferencia de milisegundos a horas
+                int horas = (int) (diferenciaMilisegundos / (1000 * 60 * 60));
+                work.get().setTotalHour(horas);
+
+                Work wordNew = work.get();
+
+                return  workRepository.save(wordNew);
             }
 
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
-        return "Error";
+        return null;
     }
 
 

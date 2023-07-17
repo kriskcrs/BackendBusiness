@@ -28,6 +28,8 @@ public class ConsultService {
     WorkRepository workRepository;
     @Autowired
     RolRepository rolRepository;
+    @Autowired
+    HistorySessionRepository historySessionRepository;
 
 
     @GetMapping(path = "/employee")
