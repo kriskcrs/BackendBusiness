@@ -5,7 +5,6 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
@@ -55,7 +54,7 @@ public class AuthenticationServices {
             loginData.setUser(null);
             loginData.setHistorySession(null);
             loginData.setMessage("1 already connected");
-               return loginData;
+            return loginData;
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
@@ -114,7 +113,7 @@ public class AuthenticationServices {
                 work.setTotalHour(createData.getWork().getTotalHour());
                 work.setStartGeo(createData.getWork().getStartGeo());
 
-                return  workRepository.save(work);
+                return workRepository.save(work);
             }
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
@@ -133,20 +132,13 @@ public class AuthenticationServices {
                 work.get().setRateToday(employeeData.get().getRate());
                 work.get().setEmployeeIdemployee(createData.getEmployee().getIdemployee());
                 work.get().setEndGeo(createData.getWork().getEndGeo());
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String i = String.valueOf(work.get().getStartTime());
-                String e = String.valueOf(work.get().getEndTime());
-                Date fechaInicial = sdf.parse(i);
-                Date fechaFinal = sdf.parse(e);
-                long diferenciaMilisegundos = fechaFinal.getTime() - fechaInicial.getTime();
-
-                // Convertir la diferencia de milisegundos a horas
+                long diferenciaMilisegundos = work.get().getEndTime().getTime() - work.get().getStartTime().getTime();
                 int horas = (int) (diferenciaMilisegundos / (1000 * 60 * 60));
                 work.get().setTotalHour(horas);
 
                 Work wordNew = work.get();
 
-                return  workRepository.save(wordNew);
+                return workRepository.save(wordNew);
             }
 
         } catch (Exception e) {
