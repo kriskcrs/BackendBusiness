@@ -51,13 +51,16 @@ public class AuthenticationServices {
                     return loginData;
                 }
             }
-
+            loginData.setUser(null);
+            loginData.setHistorySession(null);
+            loginData.setMessage("1 already connected");
+               return loginData;
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
         loginData.setUser(null);
         loginData.setHistorySession(null);
-        loginData.setMessage("failed login");
+        loginData.setMessage("2 failed login");
         return loginData;
     }
 
