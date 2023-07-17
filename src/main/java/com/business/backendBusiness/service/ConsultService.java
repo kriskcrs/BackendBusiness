@@ -33,6 +33,7 @@ public class ConsultService {
     @GetMapping(path = "/employee")
     private List<Employee> employeeList() {
         System.out.println("consumo del servicio -> employeeList");
+
         return employeeRepository.findAll();
     }
 

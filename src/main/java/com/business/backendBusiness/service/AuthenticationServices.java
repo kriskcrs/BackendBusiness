@@ -38,19 +38,29 @@ public class AuthenticationServices {
             //find user
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
-            if (!firstLogin) {
-                //registry history
-                return  registryUser(loginData, userFind);
-            } else  {
-                loginData = registryUser(loginData, userFind);
-                loginData.setMessage("1");
-                return loginData;
+
+            HistorySession historySessionFind = historySessionRepository.findByUserIduser(userFind.getIduser());
+
+            if (historySessionFind == null) {
+                if (!firstLogin) {
+                    //registry history
+                    return registryUser(loginData, userFind);
+                } else {
+                    loginData = registryUser(loginData, userFind);
+                    loginData.setMessage("1");
+                    return loginData;
+                }
             }
+            loginData.setUser(null);
+            loginData.setHistorySession(null);
+            loginData.setMessage("1 already connected");
+               return loginData;
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
+        loginData.setUser(null);
         loginData.setHistorySession(null);
-        loginData.setMessage("failed login");
+        loginData.setMessage("2 failed login");
         return loginData;
     }
 
@@ -141,16 +151,16 @@ public class AuthenticationServices {
             Long user = createData.getHistorySession().getUserIduser();
             String idsession = createData.getHistorySession().getIdsession();
             System.out.println("user id -> " + user + "\nsession -> " + idsession);
-            Optional<HistorySession> historySession =  historySessionRepository.findByIdsessionAndUserIduser(idsession, user);
-            System.out.println("sesion encontrada -> "+historySession);
+            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(idsession, user);
+            System.out.println("sesion encontrada -> " + historySession);
             if (historySession.isPresent()) {
                 if (historySession.get().getStateIdstate() == 1) {
-                    return   true;
+                    return true;
                 }
             }
         } catch (Exception e) {
             System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
-            return  false;
+            return false;
         }
         return false;
     }
