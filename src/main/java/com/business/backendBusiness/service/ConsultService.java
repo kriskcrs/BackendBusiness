@@ -103,5 +103,18 @@ public class ConsultService {
         return workRepository.findAll();
     }
 
+    @GetMapping(path = "/online")
+    private ConexionOnline conexionList() {
+        System.out.println("consumo del servicio -> online");
+        ConexionOnline conexionOnline = new ConexionOnline();
+        
+        List<Work> work = workRepository.findAll();
+        List<HistorySession> historySessions = historySessionRepository.findAll();
+
+      
+
+        return conexionOnline;
+    }
+
 
 }
