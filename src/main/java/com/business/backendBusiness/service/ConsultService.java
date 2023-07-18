@@ -5,6 +5,7 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,6 +102,39 @@ public class ConsultService {
     private List<Work> workList() {
         System.out.println("consumo del servicio -> workList");
         return workRepository.findAll();
+    }
+
+    @GetMapping(path = "/online")
+    private List<ConexionOnline> conexionList() {
+        System.out.println("consumo del servicio -> online");
+        List<ConexionOnline> conexionList = new ArrayList<>();
+
+        List<Work> work = workRepository.findAll();
+        List<User> user = userRepository.findAll();
+        List<HistorySession> historySessions = historySessionRepository.findAll();
+
+        for (Work workItem : work) {
+            for (User userItem : user) {
+                if (workItem.getEmployeeIdemployee().equals(userItem.getEmployeeIdemployee())) {
+                    ConexionOnline conexionOnline = new ConexionOnline();
+                    conexionOnline.setIdWork(workItem.getIdwork());
+                    conexionOnline.setDateWork(workItem.getDateWork());
+                    conexionOnline.setStartTime(workItem.getStartTime());
+                    conexionOnline.setEndTime(workItem.getEndTime());
+                    conexionOnline.setTotalHours(workItem.getTotalHour());
+                    conexionOnline.setStartGeo(workItem.getStartGeo());
+                    conexionOnline.setEndGeo(workItem.getEndGeo());
+                    conexionOnline.setRateToDay(workItem.getRateToday());
+                    conexionOnline.setUser(userItem.getUser());
+                    if(historySessions.isEmpty()){
+                        conexionList.clear();
+                    }
+                    conexionOnline.setState("Activo");
+                    conexionList.add(conexionOnline);
+                }
+            }
+        }
+        return conexionList;
     }
 
 

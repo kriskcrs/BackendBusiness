@@ -64,7 +64,7 @@ public class AuthenticationServices {
         return loginData;
     }
 
-    public LoginData registryUser(LoginData loginData, User userFind) {
+    private LoginData registryUser(LoginData loginData, User userFind) {
         long id = historySessionRepository.findAll().size();
         id++;
         loginData.getHistorySession().setIdhistorySession(id);
@@ -96,7 +96,7 @@ public class AuthenticationServices {
 
 
     @PostMapping("/registryWork")
-    public Work registryWork(@RequestBody CreateData createData) {
+    private Work registryWork(@RequestBody CreateData createData) {
         try {
             System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
             System.out.println(createData.getWork().getStartGeo());
@@ -122,7 +122,7 @@ public class AuthenticationServices {
     }
 
     @PostMapping("/registryWorkFinish")
-    public Work unregistryWork(@RequestBody CreateData createData) {
+    private Work unregistryWork(@RequestBody CreateData createData) {
         try {
             if (validationSession(createData)) {
                 System.out.println("work record IdEmployee -> " + createData.getEmployee().getIdemployee());
@@ -148,7 +148,7 @@ public class AuthenticationServices {
     }
 
 
-    public boolean validationSession(CreateData createData) {
+    private boolean validationSession(CreateData createData) {
         try {
             Long user = createData.getHistorySession().getUserIduser();
             String idsession = createData.getHistorySession().getIdsession();
