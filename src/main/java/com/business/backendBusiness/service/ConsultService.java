@@ -130,6 +130,9 @@ public class ConsultService {
                                 conexionOnline.setRateToDay(workItem.getRateToday());
                                 conexionOnline.setUser(userItem.getUser());
                                 conexionOnline.setState("Activo");
+                                conexionOnline.setSession(historyItem.getIdsession());
+                                conexionOnline.setIdHistorySession(historyItem.getIdhistorySession());
+                                conexionOnline.setIdEmployee(workItem.getEmployeeIdemployee());
                                 conexionList.add(conexionOnline);
                             }
 

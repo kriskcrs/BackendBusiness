@@ -15,6 +15,34 @@ public class ConexionOnline {
   private Double rateToDay;
   private String user;
   private String state;
+  private String session;
+  private long idHistorySession;
+  private  long idEmployee;
+
+
+    public long getIdEmployee() {
+        return idEmployee;
+    }
+
+    public void setIdEmployee(long idEmployee) {
+        this.idEmployee = idEmployee;
+    }
+
+    public long getIdHistorySession() {
+        return idHistorySession;
+    }
+
+    public void setIdHistorySession(long idHistorySession) {
+        this.idHistorySession = idHistorySession;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
+    }
 
     public long getIdWork() {
         return idWork;
