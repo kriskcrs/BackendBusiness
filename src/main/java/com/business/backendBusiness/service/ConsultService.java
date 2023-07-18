@@ -116,26 +116,30 @@ public class ConsultService {
         for (Work workItem : work) {
             for (User userItem : user) {
                 if (workItem.getEmployeeIdemployee().equals(userItem.getEmployeeIdemployee())) {
-                    ConexionOnline conexionOnline = new ConexionOnline();
-                    conexionOnline.setIdWork(workItem.getIdwork());
-                    conexionOnline.setDateWork(workItem.getDateWork());
-                    conexionOnline.setStartTime(workItem.getStartTime());
-                    conexionOnline.setEndTime(workItem.getEndTime());
-                    conexionOnline.setTotalHours(workItem.getTotalHour());
-                    conexionOnline.setStartGeo(workItem.getStartGeo());
-                    conexionOnline.setEndGeo(workItem.getEndGeo());
-                    conexionOnline.setRateToDay(workItem.getRateToday());
-                    conexionOnline.setUser(userItem.getUser());
-                    if(historySessions.isEmpty()){
-                        conexionList.clear();
+
+                    for (HistorySession historyItem : historySessions) {
+                        if (userItem.getEmployeeIdemployee().equals(historyItem.getUserIduser())) {
+                            ConexionOnline conexionOnline = new ConexionOnline();
+                            conexionOnline.setIdWork(workItem.getIdwork());
+                            conexionOnline.setDateWork(workItem.getDateWork());
+                            conexionOnline.setStartTime(workItem.getStartTime());
+                            conexionOnline.setEndTime(workItem.getEndTime());
+                            conexionOnline.setTotalHours(workItem.getTotalHour());
+                            conexionOnline.setStartGeo(workItem.getStartGeo());
+                            conexionOnline.setEndGeo(workItem.getEndGeo());
+                            conexionOnline.setRateToDay(workItem.getRateToday());
+                            conexionOnline.setUser(userItem.getUser());
+                            conexionOnline.setState("Activo");
+                            conexionList.add(conexionOnline);
+                        }else{
+                            conexionList.clear();
+                        }
                     }
-                    conexionOnline.setState("Activo");
-                    conexionList.add(conexionOnline);
                 }
             }
         }
         return conexionList;
-    }
+}
 
 
 }
