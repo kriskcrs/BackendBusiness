@@ -131,8 +131,6 @@ public class ConsultService {
                             conexionOnline.setUser(userItem.getUser());
                             conexionOnline.setState("Activo");
                             conexionList.add(conexionOnline);
-                        }else{
-                            conexionList.clear();
                         }
                     }
                 }
