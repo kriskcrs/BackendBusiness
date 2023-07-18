@@ -110,8 +110,10 @@ public class ConsultService {
         
         List<Work> work = workRepository.findAll();
         List<HistorySession> historySessions = historySessionRepository.findAll();
-
-      
+        List<User> user = userRepository.findAll();
+        conexionOnline.setWorkList(work);
+        conexionOnline.setHistorySessionList(historySessions);
+        conexionOnline.setUserList(user);
 
         return conexionOnline;
     }
