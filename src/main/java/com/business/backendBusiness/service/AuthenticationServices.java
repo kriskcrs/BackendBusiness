@@ -38,9 +38,7 @@ public class AuthenticationServices {
             //find user
             User userFind = userRepository.findByUserAndPassword(loginData.getUser().getUser(), loginData.getUser().getPassword());
             loginData.setUser(userFind);
-
             HistorySession historySessionFind = historySessionRepository.findByUserIduser(userFind.getIduser());
-
             if (historySessionFind == null) {
                 if (!firstLogin) {
                     //registry history
@@ -63,22 +61,25 @@ public class AuthenticationServices {
         loginData.setMessage("2 failed login");
         return loginData;
     }
-
     private LoginData registryUser(LoginData loginData, User userFind) {
-        long id = historySessionRepository.findAll().size();
-        id++;
-        loginData.getHistorySession().setIdhistorySession(id);
-        loginData.getHistorySession().setIdsession(String.valueOf(new EncodeUUID().SessionManager()));
-        loginData.getHistorySession().setUserIduser(userFind.getIduser());
-        loginData.getHistorySession().setStateIdstate(1L);
-        loginData.setHistorySession(loginData.getHistorySession());
-        historySessionRepository.save(loginData.getHistorySession());
-        //complete
-        loginData.setMessage("successful");
-        loginData.getUser().setPassword(null);
-        return loginData;
+       try {
+           long id = historySessionRepository.findAll().size();
+           id++;
+           loginData.getHistorySession().setIdhistorySession(id);
+           loginData.getHistorySession().setIdsession(String.valueOf(new EncodeUUID().SessionManager()));
+           loginData.getHistorySession().setUserIduser(userFind.getIduser());
+           loginData.getHistorySession().setStateIdstate(1L);
+           loginData.setHistorySession(loginData.getHistorySession());
+           historySessionRepository.save(loginData.getHistorySession());
+           //complete
+           loginData.setMessage("successful");
+           loginData.getUser().setPassword(null);
+           return loginData;
+       }catch (Exception e){
+           System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
+       }
+       return null;
     }
-
 
     @PostMapping(path = "/revoke")
     private String logout(@RequestBody LoginData loginData) {
@@ -93,7 +94,6 @@ public class AuthenticationServices {
             return "No present data";
         }
     }
-
 
     @PostMapping("/registryWork")
     private Work registryWork(@RequestBody CreateData createData) {
@@ -146,8 +146,6 @@ public class AuthenticationServices {
         }
         return null;
     }
-
-
     private boolean validationSession(CreateData createData) {
         try {
             Long user = createData.getHistorySession().getUserIduser();

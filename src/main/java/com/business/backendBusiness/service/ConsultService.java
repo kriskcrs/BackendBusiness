@@ -5,9 +5,7 @@ import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("v3")
@@ -118,7 +116,8 @@ public class ConsultService {
                 if (workItem.getEmployeeIdemployee().equals(userItem.getEmployeeIdemployee())) {
                     for (HistorySession historyItem : historySessions) {
                         if (userItem.getEmployeeIdemployee().equals(historyItem.getUserIduser())) {
-                            if(workItem.getEndTime()== null){
+                            if (workItem.getEndTime() == null) {
+                                System.out.println("se cumple");
                                 ConexionOnline conexionOnline = new ConexionOnline();
                                 conexionOnline.setIdWork(workItem.getIdwork());
                                 conexionOnline.setDateWork(workItem.getDateWork());
@@ -135,14 +134,66 @@ public class ConsultService {
                                 conexionOnline.setIdEmployee(workItem.getEmployeeIdemployee());
                                 conexionList.add(conexionOnline);
                             }
-
                         }
                     }
                 }
             }
         }
         return conexionList;
-}
+    }
 
+
+    @GetMapping(path = "/check-online/{sesion}/{user}")
+    private int checkOnline(@PathVariable("sesion") String sesion, @PathVariable("user") String user) {
+        try {
+            System.out.println("se valida si existe la sesion -> " + sesion + " --> " + user);
+            User userFind = userRepository.findByUser(user);
+            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(sesion, userFind.getIduser());
+            if (historySession.isPresent()) {
+                return 0;
+            }
+            return 1;
+        } catch (Exception e) {
+            System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
+            return 1;
+        }
+    }
+
+    @GetMapping(path = "/logout/{sesion}/{user}")
+    private int logoutUser(@PathVariable("sesion") String sesion, @PathVariable("user") String user) {
+        try {
+            System.out.println("se manda a finalizar -> " + sesion + " --> " + user);
+            User userFind = userRepository.findByUser(user);
+            Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(sesion, userFind.getIduser());
+            if (historySession.isPresent()) {
+                System.out.println("se finaliza" + historySession.get().getIdsession());
+
+            List<Work> workList = workRepository.findByEmployeeIdemployee(userFind.getEmployeeIdemployee());
+            int le =workList.size();
+
+            for(int i=0;i<le;i++){
+                if( workList.get(i).getEndTime() == null){
+                    Work worFin = new Work();
+                    worFin.setIdwork(workList.get(i).getIdwork());
+                    worFin.setStartTime(workList.get(i).getStartTime());
+                    worFin.setEndTime(new Date());
+                    worFin.setTotalHour(workList.get(i).getTotalHour());
+                    worFin.setDateWork(workList.get(i).getDateWork());
+                    worFin.setRateToday(workList.get(i).getRateToday());
+                    worFin.setEndGeo(workList.get(i).getStartGeo());
+                    worFin.setStartGeo(workList.get(i).getStartGeo());
+                    worFin.setEmployeeIdemployee(workList.get(i).getEmployeeIdemployee());
+                    workRepository.save(worFin);
+                }
+            }
+                historySessionRepository.deleteById(historySession.get().getIdhistorySession());
+                return 0;
+            }
+            return 1;
+        } catch (Exception e) {
+            System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
+            return 1;
+        }
+    }
 
 }

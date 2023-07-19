@@ -13,4 +13,5 @@ public interface HistorySessionRepository extends JpaRepository<HistorySession,L
     public HistorySession findByUserIduser(Long id);
 
 
+
   }
