@@ -168,24 +168,25 @@ public class ConsultService {
             if (historySession.isPresent()) {
                 System.out.println("se finaliza" + historySession.get().getIdsession());
 
-            List<Work> workList = workRepository.findByEmployeeIdemployee(userFind.getEmployeeIdemployee());
-            int le =workList.size();
+                List<Work> workList = workRepository.findByEmployeeIdemployee(userFind.getEmployeeIdemployee());
+                int le = workList.size();
 
-            for(int i=0;i<le;i++){
-                if( workList.get(i).getEndTime() == null){
-                    Work worFin = new Work();
-                    worFin.setIdwork(workList.get(i).getIdwork());
-                    worFin.setStartTime(workList.get(i).getStartTime());
-                    worFin.setEndTime(new Date());
-                    worFin.setTotalHour(workList.get(i).getTotalHour());
-                    worFin.setDateWork(workList.get(i).getDateWork());
-                    worFin.setRateToday(workList.get(i).getRateToday());
-                    worFin.setEndGeo(workList.get(i).getStartGeo());
-                    worFin.setStartGeo(workList.get(i).getStartGeo());
-                    worFin.setEmployeeIdemployee(workList.get(i).getEmployeeIdemployee());
-                    workRepository.save(worFin);
+                for (int i = 0; i < le; i++) {
+                    if (workList.get(i).getEndTime() == null) {
+                        Work worFin = new Work();
+                        worFin.setIdwork(workList.get(i).getIdwork());
+                        worFin.setStartTime(workList.get(i).getStartTime());
+                        worFin.setEndTime(new Date());
+                        //calcula tiempo
+                        worFin.setTotalHour(calculateHours(worFin.getEndTime(), workList.get(i).getStartTime()));
+                        worFin.setDateWork(workList.get(i).getDateWork());
+                        worFin.setRateToday(workList.get(i).getRateToday());
+                        worFin.setEndGeo(workList.get(i).getStartGeo());
+                        worFin.setStartGeo(workList.get(i).getStartGeo());
+                        worFin.setEmployeeIdemployee(workList.get(i).getEmployeeIdemployee());
+                        workRepository.save(worFin);
+                    }
                 }
-            }
                 historySessionRepository.deleteById(historySession.get().getIdhistorySession());
                 return 0;
             }
@@ -194,6 +195,12 @@ public class ConsultService {
             System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
             return 1;
         }
+    }
+
+
+    private int calculateHours(Date start, Date end) {
+        long diferenciaMilisegundos =   start.getTime()-end.getTime();
+        return (int) (diferenciaMilisegundos / (1000 * 60 ));
     }
 
 }

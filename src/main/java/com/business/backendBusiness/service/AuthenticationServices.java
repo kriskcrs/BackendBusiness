@@ -133,7 +133,7 @@ public class AuthenticationServices {
                 work.get().setEmployeeIdemployee(createData.getEmployee().getIdemployee());
                 work.get().setEndGeo(createData.getWork().getEndGeo());
                 long diferenciaMilisegundos = work.get().getEndTime().getTime() - work.get().getStartTime().getTime();
-                int horas = (int) (diferenciaMilisegundos / (1000 * 60 * 60));
+                int horas = (int) (diferenciaMilisegundos / (1000 * 60 ));
                 work.get().setTotalHour(horas);
 
                 Work wordNew = work.get();
