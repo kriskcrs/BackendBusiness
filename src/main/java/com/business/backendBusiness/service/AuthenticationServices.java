@@ -135,9 +135,7 @@ public class AuthenticationServices {
                 long diferenciaMilisegundos = work.get().getEndTime().getTime() - work.get().getStartTime().getTime();
                 int horas = (int) (diferenciaMilisegundos / (1000 * 60 ));
                 work.get().setTotalHour(horas);
-
                 Work wordNew = work.get();
-
                 return workRepository.save(wordNew);
             }
 
