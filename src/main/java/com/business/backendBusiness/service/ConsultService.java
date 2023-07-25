@@ -204,4 +204,10 @@ public class ConsultService {
         return (int) (diferenciaMilisegundos / (1000 * 60 ));
     }
 
+
+
+    private void cleanSession(){
+
+
+    }
 }
