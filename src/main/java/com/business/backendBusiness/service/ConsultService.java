@@ -151,8 +151,10 @@ public class ConsultService {
             User userFind = userRepository.findByUser(user);
             Optional<HistorySession> historySession = historySessionRepository.findByIdsessionAndUserIduser(sesion, userFind.getIduser());
             if (historySession.isPresent()) {
+                System.out.println("Sesion existe" + sesion);
                 return 0;
             }
+            System.out.println("Sesion no encontrada" + sesion);
             return 1;
         } catch (Exception e) {
             System.out.println("Error Validations -> " + e.getMessage() + "\nError  Validations  Cause -> " + e.getCause());
