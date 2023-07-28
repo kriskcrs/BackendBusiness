@@ -3,6 +3,7 @@ package com.business.backendBusiness.service;
 import com.business.backendBusiness.Repository.*;
 import com.business.backendBusiness.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -25,7 +26,7 @@ public class AuthenticationServices {
 
 
     @PostMapping(path = "/authentications")
-    private LoginData login(@RequestBody LoginData loginData) {
+    private ResponseEntity<LoginData> login(@RequestBody LoginData loginData) {
         try {
             boolean firstLogin = false;
             System.out.println("login " + loginData.getUser().getUser());
@@ -42,24 +43,24 @@ public class AuthenticationServices {
             if (historySessionFind == null) {
                 if (!firstLogin) {
                     //registry history
-                    return registryUser(loginData, userFind);
+                    return ResponseEntity.ok(registryUser(loginData, userFind));
                 } else {
                     loginData = registryUser(loginData, userFind);
                     loginData.setMessage("1");
-                    return loginData;
+                    return ResponseEntity.ok(loginData);
                 }
             }
             loginData.setUser(null);
             loginData.setHistorySession(null);
             loginData.setMessage("1 already connected");
-            return loginData;
+            return ResponseEntity.ok(loginData);
         } catch (Exception e) {
             System.out.println("Error -> " + e.getMessage() + "\nError causa -> " + e.getCause());
         }
         loginData.setUser(null);
         loginData.setHistorySession(null);
         loginData.setMessage("2 failed login");
-        return loginData;
+        return ResponseEntity.ok(loginData);
     }
     private LoginData registryUser(LoginData loginData, User userFind) {
        try {

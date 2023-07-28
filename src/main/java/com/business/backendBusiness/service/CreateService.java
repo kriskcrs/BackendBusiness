@@ -78,6 +78,14 @@ public class CreateService {
         return null;
     }
 
+
+    @PostMapping(path="/personUpdate")
+    private CreateData updatePersonEmployeeUser(@RequestBody CreateData createData){
+
+
+        return createData;
+    }
+
     @PostMapping(path = "/employee")
     private Employee createEmployee(@RequestBody CreateData createData) {
         try {

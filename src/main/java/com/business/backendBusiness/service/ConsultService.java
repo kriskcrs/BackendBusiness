@@ -208,8 +208,4 @@ public class ConsultService {
 
 
 
-    private void cleanSession(){
-
-
-    }
 }
